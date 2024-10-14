@@ -17,7 +17,6 @@ import os
 
 project_dir = os.path.join(os.path.dirname(__file__))
 train_data_path = os.path.join(project_dir, "train.csv")
-serving_data_path = os.path.join(project_dir, "test.csv")
 
 print(project_dir)
 print(train_data_path)
@@ -65,8 +64,6 @@ def preprocess(df):
 # Aplica la función de preprocesamiento al conjunto de datos de entrenamiento.
 preprocessed_train_df = preprocess(train_df)
 
-# Aplica la función de preprocesamiento al conjunto de datos de prueba (serving_df).
-preprocessed_serving_df = preprocess(serving_df)
 
 # Muestra las primeras 5 filas del conjunto de datos de entrenamiento preprocesado.
 preprocessed_train_df.head(5)
@@ -102,7 +99,7 @@ train_ds = tfdf.keras.pd_dataframe_to_tf_dataset(preprocessed_train_df, label="S
 
 # Convierte el DataFrame preprocesado de prueba a un conjunto de datos de TensorFlow.
 # No se especifica una etiqueta, ya que este conjunto de datos se utiliza para hacer predicciones.
-serving_ds = tfdf.keras.pd_dataframe_to_tf_dataset(preprocessed_serving_df).map(tokenize_names)
+#serving_ds = tfdf.keras.pd_dataframe_to_tf_dataset(preprocessed_serving_df).map(tokenize_names)
 
 # Define un modelo de Gradient Boosted Trees usando TensorFlow Decision Forests.
 # Configura el modelo con los siguientes parámetros:
