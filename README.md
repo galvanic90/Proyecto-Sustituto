@@ -1,6 +1,7 @@
 # Proyecto-Sustituto
-INGENIERIA DE SISTEMAS UDEA
-INTRODUCCIÓN A LA INTELIGENCIA ARTIFICIAL - MODELOS 1
+Este repositorio contiene las entregas correspondientes del proyecto sustituto de las asignaturas que se listan acontinuación
+
+- Asignaturas: Introdución a la inteligencia  - Modelos 1
 
 ## Integrantes
 - Nombre: Sara Galván Ortega 
