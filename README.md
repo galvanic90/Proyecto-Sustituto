@@ -1,9 +1,16 @@
 # Proyecto-Sustituto
 INGENIERIA DE SISTEMAS UDEA
-INTRODUCCION A LA INTELIFENCIA ARTIFICIAL
+INTRODUCCIÓN A LA INTELIGENCIA ARTIFICIAL - MODELOS 1
 
-EMMANUEL NARVAEZ HERNANDEZ
-SARA GALVAN ORTEGA
+## Integrantes
+- Nombre: Sara Galván Ortega 
+- Número de documento: 1032440925
+- Programa académico: Ingeniería de sistemas
+---
+- Nombre: Emmanuel Narváez Hernandez 
+- Número de documento: 1000548307
+- Programa académico: Ingeniería de sistemas
+
 
 INSTRUCCIONES DE EJECUCION
 # Competencia Titanic con TensorFlow Decision Forests
