@@ -26,7 +26,6 @@ train_df = pd.read_csv(train_data_path)
 
 # Carga el conjunto de datos de prueba (serving_df), que no incluye la columna de "Supervivencia" (Survived).
 # test.csv se utiliza para hacer predicciones basadas en las características de los pasajeros.
-serving_df = pd.read_csv(serving_data_path)
 
 # Define una función para preprocesar el conjunto de datos.
 def preprocess(df):
@@ -85,7 +84,7 @@ input_features.remove("Survived")
 # input_features.remove("Ticket_number")
 
 # Imprime las características de entrada seleccionadas que serán utilizadas por el modelo.
-print(f"Características de entrada: {input_features}")
+# print(f"Características de entrada: {input_features}")
 
 # Define una función para dividir los nombres en tokens. TensorFlow Decision Forests (TF-DF) puede manejar tokens de texto nativamente.
 def tokenize_names(features, labels=None):

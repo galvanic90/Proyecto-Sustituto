@@ -14,6 +14,7 @@ serving_df = pd.read_csv(serving_data_path)
 preprocessed_serving_df = preprocess(serving_df)
 
 serving_ds = tfdf.keras.pd_dataframe_to_tf_dataset(preprocessed_serving_df).map(tokenize_names)
+print(serving_ds)
 model_pkl_file = "model.pkl"
 
 # load model from pickle file
