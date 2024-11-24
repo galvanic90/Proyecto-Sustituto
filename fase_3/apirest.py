@@ -1,15 +1,18 @@
 import os
 import pickle
 
-from fastapi import FastAPI
 import pandas as pd
 import tensorflow_decision_forests as tfdf
 
+from typing import Annotated
+from fastapi import FastAPI, Body
 from train import preprocess, tokenize_names
-
+from model_features import ModelParams
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": True})
 
+global model_pkl_file
+model_pkl_file = "model.pkl"
 
 @app.get("/")
 async def root():
@@ -67,11 +70,50 @@ async def train():
 
     print(f"Precisión: {self_evaluation.accuracy} Pérdida: {self_evaluation.loss}")
 
-    model_pkl_file = "model.pkl"
 
     with open(model_pkl_file, 'wb') as file:
         pickle.dump(model, file)
 
     return {"message": f"La presisción del modelo es {self_evaluation.accuracy} y la pérdida es {self_evaluation.loss}"}
 
+@app.post("/predict")
+async def predict(model_params: Annotated[ModelParams, Body(embed=True)]):
+  
+    try:
+        # Prepare serving DataFrame
+        serving_df = {
+            'Pclass': [model_params.pclass],
+            'Name': [model_params.name],
+            'Sex': [model_params.sex],
+            'Age': [model_params.age],
+            'SibSp': [model_params.sibsp],
+            'Parch': [model_params.parch],
+            'Fare': [model_params.fare],
+            'Cabin': [model_params.cabin],
+            'Embarked': [model_params.embarked],
+            'Ticket': [model_params.ticket]
+        }
+        serving_df = pd.DataFrame.from_dict(serving_df)
+        print("Input DataFrame:\n", serving_df)
+
+        # Preprocessing
+        preprocessed_serving_df = preprocess(serving_df)
+        serving_ds = tfdf.keras.pd_dataframe_to_tf_dataset(preprocessed_serving_df)
+        
+        # Ensure tokenize_names is defined and added to the dataset
+        if "tokenize_names" in globals():
+            serving_ds = serving_ds.map(tokenize_names)
+
+        # Load the model
+        with open("model.pkl", 'rb') as file:  # Ensure 'model_pkl_file' is defined as "model.pkl" or a valid path
+            model = pickle.load(file)
+
+        # Predictions
+        proba_survive = model.predict(serving_ds, verbose=0)[:, 0]
+        print("Survival Probabilities:", proba_survive)
+        return {"survival_probability": proba_survive.tolist()}  # Return JSON serializable response
+
+    except Exception as e:
+        print("Error:", str(e))
+        return {"error": str(e)}
     
