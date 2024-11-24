@@ -98,12 +98,8 @@ async def predict(model_params: Annotated[ModelParams, Body(embed=True)]):
 
         # Preprocessing
         preprocessed_serving_df = preprocess(serving_df)
-        serving_ds = tfdf.keras.pd_dataframe_to_tf_dataset(preprocessed_serving_df)
+        serving_ds = tfdf.keras.pd_dataframe_to_tf_dataset(preprocessed_serving_df).map(tokenize_names)
         
-        # Ensure tokenize_names is defined and added to the dataset
-        if "tokenize_names" in globals():
-            serving_ds = serving_ds.map(tokenize_names)
-
         # Load the model
         with open("model.pkl", 'rb') as file:  # Ensure 'model_pkl_file' is defined as "model.pkl" or a valid path
             model = pickle.load(file)
@@ -111,7 +107,10 @@ async def predict(model_params: Annotated[ModelParams, Body(embed=True)]):
         # Predictions
         proba_survive = model.predict(serving_ds, verbose=0)[:, 0]
         print("Survival Probabilities:", proba_survive)
-        return {"survival_probability": proba_survive.tolist()}  # Return JSON serializable response
+        if  proba_survive[0] == 0:
+            return {"msg": f"You're dead, your survival probability is {proba_survive[0]}", "survival_probability": proba_survive.tolist()}  # Return JSON serializable response
+        else:
+            return {"survival_probability": proba_survive.tolist()}
 
     except Exception as e:
         print("Error:", str(e))
