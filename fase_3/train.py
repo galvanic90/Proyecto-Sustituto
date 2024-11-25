@@ -18,8 +18,6 @@ import os
 project_dir = os.path.join(os.path.dirname(__file__))
 train_data_path = os.path.join(project_dir, "train.csv")
 
-print(project_dir)
-print(train_data_path)
 # Carga el conjunto de datos de entrenamiento del archivo CSV ubicado en la carpeta de entrada.
 # train.csv contiene los datos históricos de los pasajeros del Titanic (características y si sobrevivieron o no).
 train_df = pd.read_csv(train_data_path)
