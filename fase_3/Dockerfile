@@ -12,4 +12,5 @@ RUN pip install --no-cache-dir -r requirenments.txt
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
 
+# This line is the command use to raise the server
 CMD ["uvicorn", "apirest:app", "--host", "0.0.0.0"]
